@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gimnasio UIS - Login</title>
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #6c757d;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .register-link a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>🏋️ Gimnasio UIS</h1>
+        <p class="subtitle">Sistema de Gestión</p>
+
+        <div id="message" class="message"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">📧 Correo Electrónico</label>
+                <input type="email" id="email" placeholder="tu@email.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">🔒 Contraseña</label>
+                <input type="password" id="password" placeholder="Contraseña" required>
+            </div>
+
+            <button type="submit">Iniciar Sesión</button>
+        </form>
+
+        <div class="loading">
+            <div class="spinner"></div>
+            <p>Iniciando sesión...</p>
+        </div>
+
+        <div class="register-link">
+            ¿No tienes cuenta? <a href="register.html">Regístrate aquí</a>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8094';
+
+        const messageDiv = document.getElementById('message');
+        const loginForm = document.getElementById('loginForm');
+        const loadingDiv = document.querySelector('.loading');
+
+        function showMessage(text, isError = false) {
+            messageDiv.textContent = text;
+            messageDiv.className = `message ${isError ? 'error' : 'success'}`;
+            messageDiv.style.display = 'block';
+
+            setTimeout(() => {
+                messageDiv.style.display = 'none';
+            }, 5000);
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Mostrar loading
+            loadingDiv.style.display = 'block';
+            loginForm.style.display = 'none';
+
+            try {
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+
+                    // Guardar token y datos del usuario
+                    localStorage.setItem('token', data.jwt);
+                    localStorage.setItem('user', JSON.stringify(data.usuario));
+
+                    showMessage('✅ Login exitoso! Redirigiendo...', false);
+
+                    // Redirigir según el rol
+                    setTimeout(() => {
+                        if (data.usuario.rol === 'Administrador') {
+                            window.location.href = 'administrador.html';
+                        } else if (data.usuario.rol === 'Entrenador') {
+                            window.location.href = 'entrenador-dashboard.html';
+                        } else if (data.usuario.rol === 'Cliente') {
+                            window.location.href = 'cliente.html';
+                        }
+                    }, 1000);
+
+                } else {
+                    const errorData = await response.json();
+                    showMessage(`❌ Error: ${errorData.error || 'Credenciales incorrectas'}`, true);
+                    loadingDiv.style.display = 'none';
+                    loginForm.style.display = 'block';
+                }
+            } catch (error) {
+                showMessage('⚠️ Error de conexión. Verifica que el servidor esté corriendo.', true);
+                loadingDiv.style.display = 'none';
+                loginForm.style.display = 'block';
+            }
+        });
+
+        // Verificar si ya hay sesión activa
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+
+            if (token && user) {
+                const userData = JSON.parse(user);
+                showMessage('Ya tienes una sesión activa. Redirigiendo...', false);
+                
+                setTimeout(() => {
+                    if (userData.rol === 'Administrador') {
+                        window.location.href = 'administrador.html';
+                    } else if (userData.rol === 'Entrenador') {
+                        window.location.href = 'entrenador-dashboard.html';
+                    } else if (userData.rol === 'Cliente') {
+                        window.location.href = 'cliente.html';
+                    }
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Dashboard - Gimnasio UIS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <h1>🏋️ Mi Dashboard</h1>
+            <div class="nav-right">
+                <span id="userName">Cargando...</span>
+                <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Hola, <span id="clienteName"></span> 👋</h2>
+            <p>Bienvenido a tu panel personal</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- Estadísticas Rápidas -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-card-icon">💳</div>
+                <h3>Membresías Activas</h3>
+                <div class="number" id="totalActivas">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon">💰</div>
+                <h3>Pagos Realizados</h3>
+                <div class="number" id="totalPagos">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-card-icon">📅</div>
+                <h3>Días Restantes</h3>
+                <div class="number" id="diasRestantes">-</div>
+            </div>
+        </div>
+
+        <!-- Tabs de Navegación -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('perfil')">👤 Mi Perfil</button>
+            <button class="tab-btn" onclick="showTab('membresias')">💳 Mis Membresías</button>
+            <button class="tab-btn" onclick="showTab('pagos')">💰 Mis Pagos</button>
+        </div>
+
+        <!-- Tab: Perfil -->
+        <div id="perfil" class="tab-content active">
+            <h2>Mi Perfil</h2>
+            <div class="card">
+                <div id="perfilInfo">
+                    <p>Cargando información...</p>
+                </div>
+                <button onclick="showModal('editPerfilModal')" class="btn-primary" style="margin-top: 20px;">✏️ Editar Perfil</button>
+            </div>
+        </div>
+
+        <!-- Tab: Mis Membresías -->
+        <div id="membresias" class="tab-content">
+            <h2>Mis Membresías</h2>
+            
+            <button onclick="cargarMisMembresias()" class="btn-primary" style="margin-bottom: 20px;">🔄 Actualizar</button>
+
+            <div id="membresiasContainer">
+                <p>Cargando...</p>
+            </div>
+        </div>
+
+        <!-- Tab: Mis Pagos -->
+        <div id="pagos" class="tab-content">
+            <h2>Historial de Pagos</h2>
+            
+            <button onclick="cargarMisPagos()" class="btn-primary" style="margin-bottom: 20px;">🔄 Actualizar</button>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Membresía</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pagosTable">
+                        <tr><td colspan="4">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Editar Perfil -->
+    <div id="editPerfilModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editPerfilModal')">&times;</span>
+            <h2>Editar Mi Perfil</h2>
+            <form id="editPerfilForm">
+                <input type="text" id="perfilNombre" placeholder="Nombre" required>
+                <input type="text" id="perfilApellido" placeholder="Apellido" required>
+                <input type="text" id="perfilTelefono" placeholder="Teléfono">
+                <input type="password" id="perfilPassword" placeholder="Nueva Contraseña (opcional)">
+                <button type="submit" class="btn-success">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="cliente.js"></script>
+</body>
+</html>

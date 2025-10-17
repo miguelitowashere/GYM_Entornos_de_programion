@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Administrador - Gimnasio UIS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-content">
+            <h1>🏋️ Panel Administrador</h1>
+            <div class="nav-right">
+                <span id="userName">Cargando...</span>
+                <button onclick="logout()" class="btn-logout">Cerrar Sesión</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-card">
+            <h2>Bienvenido, <span id="adminName"></span></h2>
+            <p>Panel de control administrativo del gimnasio</p>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- Tabs de Navegación -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('usuarios')">👥 Usuarios</button>
+            <button class="tab-btn" onclick="showTab('membresias')">💳 Membresías</button>
+            <button class="tab-btn" onclick="showTab('asignaciones')">📋 Asignaciones</button>
+            <button class="tab-btn" onclick="showTab('pagos')">💰 Pagos</button>
+        </div>
+
+        <!-- Tab: Usuarios -->
+        <div id="usuarios" class="tab-content active">
+            <h2>Gestión de Usuarios</h2>
+            
+            <div class="actions">
+                <button onclick="listarUsuarios()" class="btn-primary">🔄 Actualizar Lista</button>
+                <button onclick="showModal('addUserModal')" class="btn-success">➕ Nuevo Usuario</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Email</th>
+                            <th>Teléfono</th>
+                            <th>Rol</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuariosTable">
+                        <tr><td colspan="6">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Membresías -->
+        <div id="membresias" class="tab-content">
+            <h2>Gestión de Membresías</h2>
+            
+            <div class="actions">
+                <button onclick="listarMembresias()" class="btn-primary">🔄 Actualizar Lista</button>
+                <button onclick="showModal('addMembresiaModal')" class="btn-success">➕ Nueva Membresía</button>
+            </div>
+
+            <div class="cards-grid" id="membresiasGrid">
+                <p>Cargando membresías...</p>
+            </div>
+        </div>
+
+        <!-- Tab: Asignaciones -->
+        <div id="asignaciones" class="tab-content">
+            <h2>Asignaciones de Membresías</h2>
+            
+            <div class="actions">
+                <button onclick="listarAsignaciones()" class="btn-primary">🔄 Actualizar Lista</button>
+                <button onclick="showModal('addAsignacionModal')" class="btn-success">➕ Nueva Asignación</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Membresía</th>
+                            <th>Fecha Inicio</th>
+                            <th>Fecha Fin</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="asignacionesTable">
+                        <tr><td colspan="7">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Tab: Pagos -->
+        <div id="pagos" class="tab-content">
+            <h2>Gestión de Pagos</h2>
+            
+            <div class="actions">
+                <button onclick="listarPagos()" class="btn-primary">🔄 Actualizar Lista</button>
+                <button onclick="showModal('addPagoModal')" class="btn-success">➕ Registrar Pago</button>
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Cliente</th>
+                            <th>Membresía</th>
+                            <th>Fecha</th>
+                            <th>Monto</th>
+                            <th>Método</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pagosTable">
+                        <tr><td colspan="7">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modales -->
+    <div id="addUserModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addUserModal')">&times;</span>
+            <h2>Nuevo Usuario</h2>
+            <form id="addUserForm">
+                <input type="text" id="userNombre" placeholder="Nombre" required>
+                <input type="text" id="userApellido" placeholder="Apellido" required>
+                <input type="email" id="userEmail" placeholder="Email" required>
+                <input type="password" id="userPassword" placeholder="Contraseña" required>
+                <input type="text" id="userTelefono" placeholder="Teléfono">
+                <select id="userRol" required>
+                    <option value="">Seleccionar Rol</option>
+                    <option value="Administrador">Administrador</option>
+                    <option value="Entrenador">Entrenador</option>
+                    <option value="Cliente">Cliente</option>
+                </select>
+                <button type="submit" class="btn-success">Crear Usuario</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="addMembresiaModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addMembresiaModal')">&times;</span>
+            <h2>Nueva Membresía</h2>
+            <form id="addMembresiaForm">
+                <input type="text" id="membresiaNombre" placeholder="Nombre" required>
+                <textarea id="membresiaDescripcion" placeholder="Descripción" required></textarea>
+                <input type="number" id="membresiaPrecio" placeholder="Precio" step="0.01" required>
+                <input type="number" id="membresiaDuracion" placeholder="Duración (días)" required>
+                <button type="submit" class="btn-success">Crear Membresía</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="addAsignacionModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addAsignacionModal')">&times;</span>
+            <h2>Asignar Membresía</h2>
+            <form id="addAsignacionForm">
+                <select id="asignacionUsuario" required>
+                    <option value="">Seleccionar Cliente</option>
+                </select>
+                <select id="asignacionMembresia" required>
+                    <option value="">Seleccionar Membresía</option>
+                </select>
+                <input type="date" id="asignacionFechaInicio" required>
+                <input type="date" id="asignacionFechaFin" required>
+                <select id="asignacionEstado" required>
+                    <option value="Activa">Activa</option>
+                    <option value="Congelada">Congelada</option>
+                    <option value="Vencida">Vencida</option>
+                </select>
+                <button type="submit" class="btn-success">Asignar Membresía</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="addPagoModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addPagoModal')">&times;</span>
+            <h2>Registrar Pago</h2>
+            <form id="addPagoForm">
+                <select id="pagoAsignacion" required>
+                    <option value="">Seleccionar Asignación</option>
+                </select>
+                <input type="date" id="pagoFecha" required>
+                <input type="number" id="pagoMonto" placeholder="Monto" step="0.01" required>
+                <select id="pagoMetodo" required>
+                    <option value="">Método de Pago</option>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+                <button type="submit" class="btn-success">Registrar Pago</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
