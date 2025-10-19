@@ -22,57 +22,9 @@ MySQL Workbench para la base de datos.
 
 2. Estructura del Proyecto
 Basado en las carpetas y archivos del repositorio:
-GYM_Entornos_de_programion/
-├── FronEnd_Gym/               # Frontend (HTML, CSS, JS)
-│   ├── admin.js
-│   ├── administrador.html
-│   ├── cliente.html
-│   ├── cliente.js
-│   ├── login.html
-│   └── styles.css
-├── Gimnasio_Copia2/           # Backend (Spring Boot)
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/uis/gimnasio/
-│   │   │   │   ├── controlador/
-│   │   │   │   │   ├── AuthController.java
-│   │   │   │   │   ├── ClienteMembresiaController.java
-│   │   │   │   │   ├── MembresiaControlador.java
-│   │   │   │   │   ├── PagoControlador.java
-│   │   │   │   │   ├── UsuarioControlador.java
-│   │   │   │   ├── modelo/
-│   │   │   │   │   ├── ClienteMembresia.java
-│   │   │   │   │   ├── Estado.java
-│   │   │   │   │   ├── Membresia.java
-│   │   │   │   │   ├── MetodoPago.java
-│   │   │   │   │   ├── Pago.java
-│   │   │   │   │   ├── Rol.java
-│   │   │   │   │   ├── Usuario.java
-│   │   │   │   ├── repositorio/
-│   │   │   │   │   ├── ClienteMembresiaRepository.java
-│   │   │   │   │   ├── MembresiaRepository.java
-│   │   │   │   │   ├── PagoRepository.java
-│   │   │   │   │   ├── UsuarioRepository.java
-│   │   │   │   ├── security/
-│   │   │   │   │   ├── AuthenticationRequest.java
-│   │   │   │   │   ├── AuthenticationResponse.java
-│   │   │   │   │   ├── JwtRequestFilter.java
-│   │   │   │   │   ├── JwtUtil.java
-│   │   │   │   │   └── SecurityConfig.java
-│   │   │   │   ├── service/
-│   │   │   │   │   ├── ClienteMembresiaService.java
-│   │   │   │   │   ├── MembresiaService.java
-│   │   │   │   │   ├── PagoService.java
-│   │   │   │   │   ├── UsuarioService.java
-│   │   │   │   │   ├── UserDetailsServiceImpl.java
-│   │   │   │   │   └── UsuariosServiceImpl.java
-│   │   │   │   └── GimnasioApplication.java
-│   │   │   └── resources/
-│   │   │       └── application.properties
-│   └── pom.xml
-├── gimnasio3000.sql           # Esquema de la base de datos MySQL
-├── README.md                  # Este documento
-└── README_Copia2.md           # Copia del README
+
+<img width="435" height="829" alt="image" src="https://github.com/user-attachments/assets/af833fd7-116f-41e3-8ba6-7073c31711fe" />
+
 
 3. Instalación y Configuración
 
@@ -97,6 +49,7 @@ spring.datasource.url=jdbc:mysql://localhost:3306/gym_db
 spring.datasource.username=root
 spring.datasource.password=tu_password
 spring.jpa.hibernate.ddl-auto=update
+
 Ejecuta GimnasioApplication.java: mvn spring-boot:run.
 El servidor corre en http://localhost:8080.
 
