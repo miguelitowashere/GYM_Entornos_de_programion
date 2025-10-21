@@ -81,6 +81,10 @@ Interfaz: Páginas como administrador.html y cliente.html para gestión.
 Esquema definido en gimnasio3000.sql.
 Tablas principales inferidas: usuarios, membresias, pagos, etc.
 
+<img src="https://drive.google.com/uc?export=view&id=1h79YJGnQILi5VTn0D7gpJUX9OQO1OHsQ" 
+     alt="Diagrama de la base de datos gimnasio3000" 
+     width="435" height="829">
+
 6. Posibles Mejoras
 
 Agregar más detalles al README.
