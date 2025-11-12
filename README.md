@@ -1,65 +1,92 @@
-# GYM 3000 – Conversión a Django + React
+# GYM_Entornos_de_programion
+Se creara un Gym
+1. Descripción General del Proyecto
+Este proyecto es un Sistema de Gestión de Gimnasio (Gym Management System) diseñado para administrar usuarios, membresías, clases y pagos en un gimnasio. Utiliza una arquitectura web con separación clara entre frontend, backend y base de datos.
 
-Este repositorio contiene la migración del proyecto original (Spring Boot + HTML/CSS) a una arquitectura basada en **Django REST Framework** y **React** con autenticación **JWT** y peticiones autenticadas mediante `fetch`.
+Objetivo principal: Optimizar la gestión diaria de un gimnasio mediante una aplicación web.
+Estado actual: En desarrollo. El repositorio incluye frontend, backend y esquema de base de datos.
+Tecnologías clave:
 
-## Estructura principal
+Frontend: HTML, CSS, JavaScript (en FronEnd_Gym).
+Backend: Spring Boot (Java) en Gimnasio_Copia2.
+Base de datos: MySQL (esquema en gimnasio3000.sql).
 
-```
-GYM_Entornos_de_programion/
-├── gym_fullstack/
-│   ├── backend/   # API Django + DRF + MongoDB
-│   ├── frontend/  # Interfaz React (Vite)
-│   └── database/  # Recursos para levantar MongoDB y sembrar datos
-├── FronEnd_Gym/      # Frontend original (solo referencia)
-└── Gimnasio_Copia2/  # Backend original en Spring Boot (solo referencia)
-```
 
-## Backend (Django REST)
+Herramientas:
 
-- API REST construida con Django 4.2, Django REST Framework y JWT (`djangorestframework-simplejwt`).
-- Base de datos **NoSQL** (MongoDB) utilizando `djongo`.
-- Endpoints compatibles con el frontend original (`/usuario/list`, `/membresia/list`, etc.).
-- Roles de usuario (Administrador, Entrenador, Cliente) y gestión de perfiles.
-- Gestión completa de usuarios, membresías, asignaciones y pagos.
+IntelliJ IDEA para el backend.
+Visual Studio Code para el frontend.
+MySQL Workbench para la base de datos.
 
-Consulta la documentación detallada en [`gym_fullstack/backend/README.md`](gym_fullstack/backend/README.md).
 
-## Frontend (React + Vite)
 
-- Pantalla de inicio de sesión con manejo de tokens JWT.
-- Panel administrativo para CRUD de usuarios, membresías, asignaciones y pagos.
-- Panel para clientes con edición de perfil, seguimiento de membresías y pagos.
-- Estilos modernos y responsivos inspirados en el diseño original.
+2. Estructura del Proyecto
+Basado en las carpetas y archivos del repositorio:
 
-Más información en [`gym_fullstack/frontend/README.md`](gym_fullstack/frontend/README.md).
+<img width="435" height="829" alt="image" src="https://github.com/user-attachments/assets/af833fd7-116f-41e3-8ba6-7073c31711fe" />
 
-## Base de datos (MongoDB)
 
-Dentro de [`gym_fullstack/database`](gym_fullstack/database/README.md) encontrarás:
+3. Instalación y Configuración
 
-- `docker-compose.yml` para levantar MongoDB mediante Docker.
-- Un script de semilla (`seed/seed_data.py`) que crea usuarios, membresías, asignaciones y pagos de ejemplo.
+Clonar el repositorio:
+git clone https://github.com/miguelitowashere/GYM_Entornos_de_programion.git
+cd GYM_Entornos_de_programion
+Configurar la Base de Datos:
 
-Sigue los pasos descritos en su README para iniciar la base de datos y poblarla antes de ejecutar el backend.
+Abre MySQL Workbench.
+Crea una BD: CREATE DATABASE gym_db;.
+Ejecuta gimnasio3000.sql para crear las tablas.
+Asegúrate de que las credenciales en application.properties coincidan (e.g., spring.datasource.username=root, spring.datasource.password=tu_password).
 
-## Cómo ejecutar
 
-1. **Base de datos**
-   - Levanta MongoDB con Docker (`docker compose up -d` desde `gym_fullstack/database`) o usa tu propia instancia.
-   - (Opcional) Pobla datos de ejemplo con `python manage.py shell < ../database/seed/seed_data.py` desde la carpeta del backend.
+Backend (Gimnasio_Copia2):
 
-2. **Backend**
-   - Crear y activar un entorno virtual.
-   - Instalar dependencias (`pip install -r backend/requirements.txt`).
-   - Configurar variables de entorno (URI de MongoDB, claves, etc.).
-   - Ejecutar migraciones y levantar el servidor con `python manage.py runserver`.
+Abre la carpeta Gimnasio_Copia2 en IntelliJ.
+Importa como proyecto Maven.
+Configura application.properties con tu BD:
 
-3. **Frontend**
-   - Instalar dependencias con `npm install`.
-   - Ejecutar `npm run dev` y acceder a `http://localhost:5173`.
+spring.datasource.url=jdbc:mysql://localhost:3306/gym_db
+spring.datasource.username=root
+spring.datasource.password=tu_password
+spring.jpa.hibernate.ddl-auto=update
 
-Asegúrate de que el backend esté disponible en `http://localhost:8000/api` o ajusta `VITE_API_BASE` en el frontend.
+Ejecuta GimnasioApplication.java: mvn spring-boot:run.
+El servidor corre en http://localhost:8080.
 
----
 
-> Los directorios originales se conservan únicamente como referencia histórica y no se modificaron durante la migración.
+Frontend (FronEnd_Gym):
+
+Abre FronEnd_Gym en VS Code.
+Usa Live Server para servir login.html en http://localhost:5500.
+Conecta al backend editando JS (e.g., fetch('http://localhost:8080/api/usuarios')).
+
+
+Pruebas:
+
+Accede a http://localhost:5500/login.html.
+Prueba APIs con Postman (e.g., GET /api/usuarios).
+
+
+
+4. Funcionalidades Principales
+
+Gestión de Usuarios: Registro, edición y eliminación (vía UsuarioControlador).
+Membresías: Administración de planes (vía MembresiaControlador).
+Pagos: Registro y seguimiento (vía PagoControlador).
+Autenticación: Login con JWT (vía SecurityConfig y JwtUtil).
+Interfaz: Páginas como administrador.html y cliente.html para gestión.
+
+5. Base de Datos (MySQL)
+
+Esquema definido en gimnasio3000.sql.
+Tablas principales inferidas: usuarios, membresias, pagos, etc.
+
+<img src="https://drive.google.com/uc?export=view&id=1h79YJGnQILi5VTn0D7gpJUX9OQO1OHsQ" 
+     alt="Diagrama de la base de datos gimnasio3000" 
+     width="435" height="829">
+
+6. Posibles Mejoras
+
+Agregar más detalles al README.
+Deploy en servidor (e.g., Heroku para backend).
+Tests unitarios con JUnit.
